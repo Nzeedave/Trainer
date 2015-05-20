@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block body_block %}
+    <h1>{{ routine.name }}</h1>
+    <ol>
+    {% for item in items %}
+      <li><a href = "{% url 'routine_exercise' routine_slug=routine_slug item_id=forloop.counter %}">
+            {{ item.exercise.desc_long }} ({{ item.exercise.category.name  }})</a></li>
+    {% endfor %}
+    </ol>
+    <a href="{% url 'select_routine' %}">Back to selection</a>
+{% endblock %}
+    

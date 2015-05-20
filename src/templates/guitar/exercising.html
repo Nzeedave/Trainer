@@ -1,0 +1,8 @@
+{% extends 'base.html' %}
+
+{% block body_block %}
+
+{% include 'snippets/exercise_form.html' %}
+
+{% if msg %}<p> {{msg}}</p>{% endif %}
+{% endblock %}
