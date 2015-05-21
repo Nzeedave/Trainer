@@ -1,0 +1,31 @@
+    {% comment %}
+        REQUIRES:
+            request_path ---- TO IMPLEMENT
+            form
+            exercise_desc
+
+            inclusion of <script src= "{% static "js/timer.js" %}"></script>
+    {% endcomment %}
+    
+    <div>    
+        <h1 class="headline">{{exercise_desc}}</h2>
+        {% load static %}
+        
+        <link rel="stylesheet" type="text/css" href="{% static "css/exercise_form.css" %}" />
+        <script src= "{% static "js/timer.js" %}"></script>
+        <form class="exercising_form" id="exercising_form" name="exercising_form" method="post" action="{{ request_path }}">
+            {% csrf_token %}
+            {% for field in form.visible_fields %}
+                {{ field.label_tag }} {{ field }}<br/>
+            {% endfor %}
+    
+        
+        <input id="submit" type="submit" name="submit" value="Save" style="display: none;" />
+        <button type="button" onclick="start()" id="btn_start">Start Countdown</button>
+        <button type="button" onclick="stop()" id="btn_stop">Skip Exercise</button>
+        <div class="counter">
+            <span class="counter"> <p id="counter">Countdown</p></span>
+        </div>
+        <p id="message">test</p>
+        </form>
+    </div>

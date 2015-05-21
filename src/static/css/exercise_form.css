@@ -1,0 +1,66 @@
+.headline {
+    margin-left: 26px;
+    width: 356px;
+    background-color: #b0c4de;
+    margin-top: 20px;
+    font-family: sans-serif;
+    text-align: center;
+    
+}
+
+.exercising_form label{
+    width:150px;
+    margin-top: 3px;
+    display:block;
+    float:left;
+    padding:3px;
+}
+
+.exercising_form input {
+    height:20px; 
+    width:240px; 
+    padding:5px 8px;
+}
+
+.exercising_form {
+    font-family: sans-serif;
+}
+
+.exercising_form textarea {padding:8px; width:300px;}
+.exercising_form button {margin-left:156px;}
+
+#btn_start{
+    margin-left:156px;
+    width: 123px;
+}
+
+#btn_stop{
+    margin-left:10px;
+    width: 123px;
+}
+
+div.counter {
+    width: 256px;
+    text-align: center;
+    margin-left: 156px;
+    background-color: #b0c4de;
+}
+
+span.counter {
+    vertical-align: middle;
+    font-weight: bold;
+    
+}
+
+#counter{
+    font-size: 200%;
+    font-family: sans-serif;
+}
+
+#message{
+    width: 360px;
+    text-align: right;
+    font-size: 80%;
+    font-style: italic;
+    
+}
