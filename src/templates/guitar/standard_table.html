@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block body_block %}
+
+     <table>
+        {% for head in table_header %}
+            <th>{{ head }}</th> 
+        {% endfor %}
+        {% for data in dataset %}
+            <tr>
+                {% for entry in data.table_data %}
+                    <td class="{{entry.1}}">{{ entry.0|safe }}</td>
+                {% endfor %}
+            </tr>
+        {% endfor %}
+    </table>
+
+{% endblock %}

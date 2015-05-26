@@ -1,11 +1,10 @@
 .headline {
     margin-left: 26px;
     width: 356px;
-    background-color: #b0c4de;
     margin-top: 20px;
     font-family: sans-serif;
     text-align: center;
-    
+
 }
 
 .exercising_form label{
@@ -17,8 +16,8 @@
 }
 
 .exercising_form input {
-    height:20px; 
-    width:240px; 
+    height:20px;
+    width:240px;
     padding:5px 8px;
 }
 
@@ -43,13 +42,12 @@ div.counter {
     width: 256px;
     text-align: center;
     margin-left: 156px;
-    background-color: #b0c4de;
 }
 
 span.counter {
     vertical-align: middle;
     font-weight: bold;
-    
+
 }
 
 #counter{
@@ -62,5 +60,42 @@ span.counter {
     text-align: right;
     font-size: 80%;
     font-style: italic;
-    
+
+}
+
+
+.routine_item_form label{
+    width:150px;
+    margin-top: 3px;
+    display: block;
+    float:left;
+    padding:3px;
+}
+
+.routine_item_form input {
+    height:20px;
+    width:220px;
+    padding:5px 8px;
+    float:left;
+}
+
+.routine_item_form select {
+    height:30px;
+    width:240px;
+    padding:5px 8px;
+    float:left;
+}
+.routine_item_form {
+    font-family: sans-serif;
+    background-color: green;
+}
+
+
+.routine_item_form textarea {padding:8px; width:300px;}
+
+#submit {
+    height: 30px;
+    margin-left:156px;
+}
+
 }

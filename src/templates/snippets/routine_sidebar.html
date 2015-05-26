@@ -1,0 +1,13 @@
+{% comment %}
+    Requires:
+        *   routine_items
+        *   routine_slug
+{% endcomment %}
+
+
+<ul>
+    {% for item in routine_items %}
+      <li><a href = "{% url 'routine_exercise' routine_slug=routine_slug item_id=forloop.counter %}">
+            {{ item.exercise.desc_long }} ({{ item.exercise.category.name  }})</a></li>
+    {% endfor %}
+</ul>

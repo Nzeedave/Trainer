@@ -1,6 +1,7 @@
 from django import forms
-from guitar.models import Exercise, ExerciseData, Routine
+from guitar.models import Exercise, ExerciseData, Routine, RoutineItem, Category
 import datetime
+from guitar.fields import ExerciseModelChoiceField
 
 class ExerciseDataForm(forms.ModelForm):
     ex = Exercise()
@@ -24,4 +25,37 @@ class RoutineDataForm(forms.ModelForm):
     class Meta:
         model = Routine
         fields = ('name',)
+        
+class RoutineItemForm(forms.ModelForm):
+    exercise = ExerciseModelChoiceField( Exercise.objects.all())
+    routine = forms.ModelChoiceField( Routine.objects.all())
+    order = forms.IntegerField()
+    
+    class Meta:
+        model = RoutineItem
+        fields= ('exercise', 'routine', 'order')
+        
+    
+class CategoryForm(forms.ModelForm):
+    name = forms.CharField
+    time = forms.IntegerField(initial = 0)
+    target = forms.IntegerField(initial = 0)
+    
+    class Meta:
+        model = Category
+        fields = ('name', 'time', 'target')
+        
+class ExerciseForm(forms.ModelForm):
+    
+    category = forms.ModelChoiceField( Category.objects.all() )
+    desc = forms.CharField( max_length = 128)
+    desc_long = forms.CharField( max_length = 512,  required = False)
+    comment = forms.Textarea( )
+    url = forms.URLField( required = False)
+    record = forms.IntegerField( initial = 0)
+    time = forms.IntegerField()
+    
+    class Meta:
+        model = Exercise
+        exclude = ('id',)
         

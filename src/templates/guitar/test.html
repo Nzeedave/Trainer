@@ -15,12 +15,18 @@
      <title>Test Page</title>
   </head>
 
-  <body>
-
-<button type="button" onclick="start()">Start Countdown</button>
-<button type="button" onclick="stop()">Stop Countdown</button>
-<p id="counter">10</p>
-<input id="startval">
-<p id="message"></p>
+<body>
+     <table>
+        {% for head in exercises.0.table_header %}
+            <th>{{ head }}</th> 
+        {% endfor %}
+        {% for exercise in exercises %}
+            <tr>
+                {% for entry in exercise.table_data %}
+                    <td class="{{entry.1}}">{{ entry.0|safe }}</td>
+                {% endfor %}
+            </tr>
+        {% endfor %}
+    </table>
   </body>
 </html>

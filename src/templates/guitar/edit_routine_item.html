@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block body_block %}
+
+    {% load static %}
+    <div>
+        <link rel="stylesheet" type="text/css" href="{% static "css/exercise_form.css" %}" />
+        <h2> {{ current.exercise.desc_long }}</h2>
+
+        <div>
+            <form class="routine_item_form" id="routine_item_form" name="routine_item_form" method="post" action="{{ request_path }}">
+                {% csrf_token %}
+                {% for field in form.visible_fields %}
+                    {{ field.label_tag }} {{ field }} {{ field.help_text }} <br> <br>
+                {% endfor %}
+                <input id="submit" type="submit" name="submit" value="Save" />
+            </form>
+        </div>
+        <br />
+        <br />
+        <div>
+            <table>
+                {% for item in routine_items %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ item.exercise.desc }}</td>
+                        <td>{{ item.order }} </td>
+                    </tr>
+
+                {% endfor %}
+            </table>
+        </div>
+
+    </div>
+{% endblock %}

@@ -1,17 +1,29 @@
 {% extends 'base.html' %}
 
+{% load static %}
+
+{% block script_block %}
+    <link rel="stylesheet" type="text/css" href="{% static "css/sidebar.css" %}" />
+{% endblock %}
+
 {% block body_block %}
-
-    {% include 'snippets/exercise_form.html' %}
-
-    {% if previous_id %}
-    <a href = "{% url 'routine_exercise' routine_slug=routine_slug item_id=previous_id %}">Previous</a>
-    {% endif %}
-    {% if next_id %}
-    <a href = "{% url 'routine_exercise' routine_slug=routine_slug item_id=next_id %}">Next</a>
-    <a href = "{% url 'routine_abort' routine_slug=routine_slug %}">Stop Training</a>
-    {% else %}
-        <a href = "{% url 'routine_finish' routine_slug=routine_slug %}">End</a>
-    {% endif %}
+    <div class="container">
+        <div class="sidebar">
+            {% include 'snippets/routine_sidebar.html' %}
+        </div>
+        <div class="mainframe">
+            {% include 'snippets/exercise_form.html' %}
+        
+            {% if previous_id %}
+            <a href = "{% url 'routine_exercise' routine_slug=routine_slug item_id=previous_id %}">Previous</a>
+            {% endif %}
+            {% if next_id %}
+            <a href = "{% url 'routine_exercise' routine_slug=routine_slug item_id=next_id %}">Next</a>
+            <a href = "{% url 'routine_abort' routine_slug=routine_slug %}">Stop Training</a>
+            {% else %}
+                <a href = "{% url 'routine_finish' routine_slug=routine_slug %}">End</a>
+            {% endif %}
+        </div>
+    </div>
 {% endblock %}
   

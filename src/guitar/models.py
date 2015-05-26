@@ -30,6 +30,18 @@ class Routine(models.Model):
     def get_items(self):
         return RoutineItem.objects.filter( routine = self).order_by('order')
     
+    def cleanup_order(self):
+        i = 1
+        for item in self.get_items():
+            item.order = i;
+            i = i+1
+            item.save()
+    
+    def insert(self, position):
+        for item in RoutineItem.objects.filter( routine = self).filter( order__gte = position).order_by('order').reverse():
+            item.order = item.order + 1;
+            item.save()
+    
     def check_id(self, i = 0):
         if i < self.count() and i >= 0:
             return True
@@ -51,6 +63,21 @@ class Category(models.Model):
     time = models.IntegerField(default = 0)
     target = models.IntegerField(default = 0)
     
+    @staticmethod
+    def table_header():
+        return[
+                "Name",
+                "Time",
+                "Target"
+            ]
+    
+    def table_data(self):
+        return [
+                [self.name, "name"],
+                [self.time, 'time'],
+                [self.target, "target"]
+            ]
+    
     def __unicode__(self):
         return self.name
     def __str__(self):
@@ -65,6 +92,48 @@ class Exercise(models.Model):
     url = models.URLField(blank = True)
     record = models.IntegerField(default = 0)
     time = models.IntegerField()
+    
+    @staticmethod
+    def table_header():
+        return [
+                "Category",
+                "Description",
+                "Comment",
+                "Url",
+                "# Completed",
+                "Last Done"
+            ]
+    
+    def table_tags(self):
+        return [
+                "category",
+                "description",
+                "comment",
+                "url",
+                "count",
+                "last"
+            ]
+    
+    def table_data(self):
+        if self.url != '':
+            link_tag = '<a href="' + self.url + '"> Link </a>'
+        else: 
+            link_tag = ''
+        return [ 
+                [self.category, "category"],
+                [self.desc_long, "desc_long"],
+                [self.comment, "comment"],
+                [link_tag, "link"],
+                [self.count_times(), "count"],
+                [self.last_time(), "last"]
+                ]
+    def count_times(self):
+        return ExerciseData.objects.filter(exercise = self).count()
+    
+    def last_time(self):
+        if self.count_times() > 0:
+            return ExerciseData.objects.filter(exercise = self).order_by('date').reverse()[0]
+        return 0
     
     def __unicode__(self):
         return self.desc
@@ -92,4 +161,5 @@ class ExerciseData(models.Model):
         return str(self.date) + ' ' + str(self.exercise) + ' - ' + str(self.id)
 
 
+    
     

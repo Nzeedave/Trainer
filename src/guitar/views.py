@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
-from guitar.forms import ExerciseDataForm, RoutineDataForm
+from guitar.forms import ExerciseDataForm, RoutineDataForm, RoutineItemForm, CategoryForm
+from guitar.forms import ExerciseForm
 from guitar.models import Exercise, ExerciseData, Category, Routine, RoutineItem
 from django.db.models.sql.where import NothingNode
 
@@ -119,9 +120,14 @@ def show_routine(request, routine_slug):
     address = 'guitar/show_routine.html'
     return render(request, address, context_dict )
 
-def test(request):
+def test(request,):
     
-    return show_routine(request, 'standard')
+    exercises = Exercise.objects.all()
+    context_dict = { 'exercises': exercises, 
+                    }
+    address = 'guitar/test.html'
+    
+    return render(request, address, context_dict)
 
 def routine_abort(request, routine_slug):
     return redirect('show_routine', routine_slug)
@@ -129,3 +135,90 @@ def routine_abort(request, routine_slug):
 def routine_finish(request, routine_slug):
     print('Finished')
     return redirect('show_routine', routine_slug)
+
+def routine_edit(request,routine_slug):
+    context_dict= {}
+
+    
+    try:
+        routine = Routine.objects.get(slug = routine_slug)
+        context_dict['routine'] = routine
+        context_dict['routine_items'] = routine.get_items()
+    except Routine.DoesNotExist:
+        pass
+    
+    address = 'guitar/edit_routine.html'
+    return render(request, address, context_dict)
+    
+def routine_item_edit(request, routine_slug, routine_item_id=None):
+    
+    context_dict = {
+            'routine_slug': routine_slug,
+            'routine_item_id': routine_item_id,
+            }
+    
+    routine= Routine.objects.get(slug = routine_slug)
+    context_dict['current'] =  routine.get_items()[int(routine_item_id) - 1]
+    form = RoutineItemForm( instance =  routine.get_items()[int(routine_item_id) - 1] )
+    context_dict['form'] = form
+    context_dict['routine_items']=routine.get_items()
+    address = 'guitar/edit_routine_item.html'
+    return render(request, address, context_dict)
+
+
+def create_category(request):
+    context_dict = {}
+    address = "guitar/create_category.html"
+    
+    if request.method == 'POST':
+        form = CategoryForm(request.POST)
+        if form.is_valid():
+
+            form.save()
+                
+            return list_categories(request)
+        
+        else: 
+            context_dict['form'] = form
+            return render(request, address, context_dict)
+    
+    context_dict['form'] = CategoryForm()
+    return render(request, address, context_dict)
+
+def list_categories(request):
+    context_dict = { 
+            'table_header': Category.table_header(),
+            'dataset': Category.objects.all()
+            }
+    
+    address = 'guitar/standard_table.html'
+    return render(request, address, context_dict)
+
+def create_exercise(request):
+    address = "guitar/create_exercise.html"
+    context_dict = {}
+    
+    if request.method == 'POST':
+        form = ExerciseForm(request.POST)
+        
+        if form.is_valid():
+            form.save()
+            
+            return list_exercises(request)
+        
+    else:
+        form = ExerciseForm()  
+        
+    context_dict['form'] = form
+           
+            
+    return render(request, address, context_dict)
+
+def list_exercises(request):
+    context_dict = { 
+            'table_header': Exercise.table_header(),
+            'dataset': Exercise.objects.all(),
+            }
+    
+    address = 'guitar/standard_table.html'
+    return render(request, address, context_dict)

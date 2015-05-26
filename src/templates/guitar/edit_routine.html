@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block body_block %}
+    <ol>
+        {% for item in routine.get_items %}
+            <li><a href="{% url 'routine_item_edit' routine.slug forloop.counter %}">{{ item.exercise.desc_long }}</a></li>
+        {% endfor %}
+    </ol>
+
+{% endblock %}
