@@ -35,6 +35,15 @@ class RoutineItemForm(forms.ModelForm):
         model = RoutineItem
         fields= ('exercise', 'routine', 'order')
         
+
+class RoutineItemForm_Exercise(forms.ModelForm):
+    exercise = ExerciseModelChoiceField( Exercise.objects.all())
+#    routine = forms.ModelChoiceField( Routine.objects.all())
+#    order = forms.IntegerField()
+    
+    class Meta:
+        model = RoutineItem
+        exclude= ('order', 'routine',)
     
 class CategoryForm(forms.ModelForm):
     name = forms.CharField

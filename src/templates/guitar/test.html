@@ -17,16 +17,24 @@
 
 <body>
      <table>
-        {% for head in exercises.0.table_header %}
+        {% for head in items.0.table_header %}
             <th>{{ head }}</th> 
         {% endfor %}
-        {% for exercise in exercises %}
+        {% for item in items %}
             <tr>
-                {% for entry in exercise.table_data %}
+                {% for entry in item.table_data %}
                     <td class="{{entry.1}}">{{ entry.0|safe }}</td>
                 {% endfor %}
             </tr>
         {% endfor %}
+
     </table>
+    <form class="routine_item_form" id="routine_item_form" name="routine_item_form" method="post" action="{{ request_path }}">
+            {% csrf_token %}
+            {% for field in form.visible_fields %}
+                {{ field.label_tag }} {{ field }} {{ field.help_text }} <br> <br>
+            {% endfor %}
+            <input id="submit" type="submit" name="submit" value="Save" />
+    </form>
   </body>
 </html>

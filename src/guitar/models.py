@@ -146,6 +146,19 @@ class RoutineItem(models.Model):
     order = models.IntegerField()
     class Meta:
         unique_together = ["routine", "order"]
+        
+    def table_header(self):
+        return [
+                'Routine',
+                'Exercise',
+                'Order'
+                ]
+    def table_data(self):
+        return [
+                [self.routine, "routine"],
+                [self.exercise, "exercise"],
+                [self.order, "order"]
+                ]
     
 class ExerciseData(models.Model):
     id = models.AutoField(primary_key = True)
@@ -154,6 +167,7 @@ class ExerciseData(models.Model):
     time = models.IntegerField()
     count = models.IntegerField()
     date = models.DateField()
+    
     
     def __unicode__(self):
         return str(self.date) + ' ' + str(self.exercise) + ' - ' + str(self.id)

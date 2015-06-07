@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from guitar.forms import ExerciseDataForm, RoutineDataForm, RoutineItemForm, CategoryForm
-from guitar.forms import ExerciseForm
+from guitar.forms import ExerciseForm, RoutineItemForm_Exercise
 from guitar.models import Exercise, ExerciseData, Category, Routine, RoutineItem
 from django.db.models.sql.where import NothingNode
 
@@ -93,6 +93,7 @@ def routine_exercise(request, routine_slug, item_id):
             else:
                 return redirect('routine_finish', routine_slug)
         
+        
         context_dict['exercise_id'] = exercise.id
         context_dict['item_id'] = item_id
         context_dict['i'] = i
@@ -123,8 +124,32 @@ def show_routine(request, routine_slug):
 def test(request,):
     
     exercises = Exercise.objects.all()
-    context_dict = { 'exercises': exercises, 
-                    }
+    items = RoutineItem.objects.all()
+    form = RoutineItemForm_Exercise
+    
+    if request.method == 'POST':
+        print(request.POST)
+        form = RoutineItemForm_Exercise( request.POST)
+        if form.is_valid():
+            print("Counts as valid")
+            
+            routine_item = RoutineItem.objects.get_or_create( routine = Routine.objects.get( slug = 'standard'),
+                                                              order = 1)[0]
+            routine_item.exercise = form.save(commit = False).exercise
+            
+            print("    Routine: " + routine_item.routine.slug)
+            print("    Order: " + str(routine_item.order))
+            print("    Exercise: " + routine_item.exercise.desc )
+            print("Is valid")
+            routine_item.save(force_update =True)
+            return redirect(request.path)
+    
+    context_dict = { 
+                    'exercises': exercises, 
+                    'form': form,
+                    'items': items,
+                }
+    
     address = 'guitar/test.html'
     
     return render(request, address, context_dict)
@@ -222,3 +247,35 @@ def list_exercises(request):
     
     address = 'guitar/standard_table.html'
     return render(request, address, context_dict)
+
+# This creates a new RoutineItem 
+
+def replace_routine_item(request, routine_slug, position):
+    
+    address = ""
+    context_dict = {}
+    
+    return render(request. address, context_dict)
+
+def insert_routine_item(request, routine_slug, position):
+    # Creates 
+    
+    routine_item = RoutineItem()
+    address = ""
+    context_dict = {}
+    
+    
+    
+    try:
+        
+        if request.method == 'POST':
+            routine = Routine.objects.get( slug = routine_slug)
+            routine.cleanup_order()
+            routine.insert(position)
+            
+            routine_item.routine = routine
+            routine_item.order = position
+    except Routine.DoesNotExist:
+        pass
+            
+    return render(request. address, context_dict)
